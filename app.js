@@ -1,36 +1,16 @@
-var express = require("express");
-var bodyParser = require("body-parser");
-var Campground = require("./models/campground");
-var mongoose = require("mongoose");
-
-var app = express();
-var seedDB = require("./seeds");
+var express = require("express"),
+    app = express(),
+    bodyParser = require("body-parser"),
+    mongoose = require("mongoose"),
+    Campground = require("./models/campground"),
+    seedDB = require("./seeds")
 
 seedDB();
 mongoose.connect('mongodb://localhost/yelpcamp');
-let db = mongoose.connection;
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
-
-
-
-// Campground.create(
-//      {
-//          name: "Granite Hill", 
-//          image: "https://farm1.staticflickr.com/60/215827008_6489cd30c3.jpg",
-//          description: "This is a huge granite hill, no bathrooms.  No water. Beautiful granite!"
-
-//      },
-//      function(err, campground){
-//       if(err){
-//           console.log(err);
-//       } else {
-//           console.log("NEWLY CREATED CAMPGROUND: ");
-//           console.log(campground);
-//       }
-//     });
-
+seedDB();
+let db = mongoose.connection;
 
 app.get("/", function(req, res) {
     res.render("landing");
@@ -74,16 +54,17 @@ app.get("/campgrounds/new", function(req, res) {
 // SHOW - shows more info about one campground
 app.get("/campgrounds/:id", function(req, res) {
     //find the campground with provided ID
-    Campground.findById(req.params.id, function(err, foundCampground) {
+    Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground) {
         if (err) {
             console.log(err);
         } else {
-            //render show template with that campground
+            console.log(foundCampground)
+                //render show template with that campground
             res.render("show", { campground: foundCampground });
         }
     });
 })
 
 app.listen(3000, function(req, res) {
-    console.log('YelpCamp Server Has Started!!!');
+    console.log("SERVER STARTED!!")
 });
