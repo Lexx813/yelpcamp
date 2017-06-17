@@ -66,5 +66,5 @@ app.get("/campgrounds/:id", function(req, res) {
 })
 
 app.listen(3000, function(req, res) {
-    console.log("SERVER STARTED!!")
+    console.log("SERVER STARTED");
 });
