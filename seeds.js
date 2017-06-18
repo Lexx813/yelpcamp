@@ -8,11 +8,6 @@ var data = [{
         description: "blah blah blah"
     },
     {
-        name: "Desert Mesa",
-        image: "https://farm4.staticflickr.com/3859/15123592300_6eecab209b.jpg",
-        description: "blah blah blah"
-    },
-    {
         name: "Canyon Floor",
         image: "https://farm1.staticflickr.com/189/493046463_841a18169e.jpg",
         description: "blah blah blah"
