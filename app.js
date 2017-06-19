@@ -103,9 +103,7 @@ app.post("/campgrounds/:id/comments", function(req, res) {
     //connect new comment to campground
     //redirect campground show page
 });
-//create new comment
-//connect new comment to campground
-//redirect campground show page
+
 
 
 
