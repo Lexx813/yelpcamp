@@ -2,8 +2,11 @@ var express = require("express"),
     app = express(),
     bodyParser = require("body-parser"),
     mongoose = require("mongoose"),
+    passport = require("passport"),
+    LocalStrategy = require("passport-local"),
     Campground = require("./models/campground"),
     Comment = require("./models/comment"),
+    User = require("./models/user"),
     seedDB = require("./seeds")
 
 
@@ -15,6 +18,22 @@ app.use(express.static(__dirname + "/public"));
 seedDB();
 let db = mongoose.connection;
 
+//PASSPORT CONFIGURATION
+app.use(require("express-session")({
+    secret: "Once again Rusty wins cutest dog!",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use(function(req, res, next) {
+    res.locals.currentUser = req.user;
+    next();
+});
 app.get("/", function(req, res) {
     res.render("landing");
 });
@@ -110,7 +129,14 @@ app.post("/campgrounds/:id/comments", function(req, res) {
 
 
 
+//==========
+//AUTH ROUTES
+//==========
 
+//show register form
+app.get("/register", function(req, res) {
+    res.render("register");
+});
 
 app.listen(3000, function(req, res) {
     console.log("SERVER STARTED");
